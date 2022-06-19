@@ -69,7 +69,7 @@ class ImageNetSDataset(ImageFolder):
 
         # # generate bb mask
         # contours, _ = cv2.findContours(segmentation_mask, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-        # height, width = segmentation_mask.shape
+        height, width = segmentation_mask.shape
         bb_mask = torch.zeros((height, width), dtype=torch.int32)
         # for contour in contours:
         #     x_min, y_min = contour.min(axis=0).flatten()
