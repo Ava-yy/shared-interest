@@ -3,7 +3,7 @@
 import inspect
 import numpy as np
 
-from shared_interest import scoring_functions
+from . import scoring_functions
 
 
 def shared_interest(ground_truth_features, saliency_features,
