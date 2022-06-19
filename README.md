@@ -5,7 +5,8 @@ https://observablehq.com/d/2c8fc79ee08bb941
 ## 2. open server
 ```ssh -L 8000:localhost:8000 zhaoy32@10.2.191.150```
 ## 3. run server.py
-* run server.py under ```zhaoy32/home/zhaoy32/Desktop/interaction/work```
+* run server.py under ```home/zhaoy32/Desktop/interaction/work/scripts```
+* All datasets needed for interaction is stord in ```home/zhaoy32/Desktop/interaction/work/outputs/output_imagenet_s```
 
 # Prepare datasets from scratch
 ## 1. Clone this repo
