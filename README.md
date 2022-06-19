@@ -25,7 +25,7 @@ pip install -e git+https://github.com/mitvis/shared-interest.git#egg=shared_inte
 cd datapreparation
 bash data_preparation.sh ./datasets/ILSVRC2012/val ./datasets/ILSVRC2012_Seg [split: 50 300 919 all] [whether to copy new images: false, true]
 ```
-* Here we choose split:all, and use imagenetS919 validation dataset(images) and semi-train datasets(9190 images). For each image, we generate the GradCAM heatmaps for the model's top 5 predictions. We also exclude some images with unwanted concepts.
+* Here we choose split:all, and use imagenetS919 validation dataset(12419 images) and semi-train datasets(9190 images). For each image, we generate the GradCAM heatmaps for the model's top 5 predictions. We also exclude some images with unwanted concepts.
 * More details about ImageNet-S dataset could be read in https://github.com/UnsupervisedSemanticSegmentation/ImageNet-S
 
 ## 4. define path for importing package
