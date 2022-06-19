@@ -111,7 +111,7 @@ for i, (image_names, images, bb_masks, seg_masks, labels) in enumerate(tqdm(data
         # print('top5_predictions : ',top5_predictions[0][:5])
         top5_predictions = top5_predictions[0][:5] # torch.tensor
 
-    num_components_gt, area_of_components_gt = component_analysis(ground_truth)
+    num_components_gt, area_of_components_gt, area_of_components_gt_ratio = component_analysis(ground_truth)
     
     # must set batch_size as 1
     assert len(image_names) == 1
@@ -151,7 +151,7 @@ for i, (image_names, images, bb_masks, seg_masks, labels) in enumerate(tqdm(data
             saliency_masks = binarize_std(saliency, num_std=args.num_std)
         cv2.imwrite(str(saliency_mask_save_dir / (image_name + f'_{concept_id}' + '_saliencymask' + f'_{args.percentile}_{args.num_std}.jpg')), saliency_masks[0] * 255)
 
-        num_components_sc, area_of_components_sc = component_analysis(saliency_masks)
+        num_components_sc, area_of_components_sc, area_of_components_sc_ratio = component_analysis(saliency_masks)
 
         for score in shared_interest_scores:
             shared_interest_scores[score] = shared_interest(ground_truth, saliency_masks, score=score)
@@ -163,8 +163,10 @@ for i, (image_names, images, bb_masks, seg_masks, labels) in enumerate(tqdm(data
             top5_prediction = top5_predictions.tolist(),
             num_components_sc=num_components_sc,
             area_of_components_sc = area_of_components_sc,
+            area_of_components_sc_ratio = area_of_components_sc,
             num_components_gt = num_components_gt,
             area_of_components_gt = area_of_components_gt,
+            area_of_components_gt_ratio = area_of_components_sc,
             saliency_method = args.saliency_method,
            # percentile = float(args.percentile),
            # num_std = float(args.num_std),
@@ -220,6 +222,12 @@ area_comp_gt = np.array(area_comp_gt)
 area_comp_gt.astype(np.float32).tofile('area_of_components_gt.bin')
 area_comp_sc.astype(np.float32).tofile('area_of_components_sc.bin')
 
+area_comp_gt_ratio = [np.array(item).sum() for item in result_dict['area_of_components_gt_ratio']]
+area_comp_sc_ratio = [np.array(item).sum() for item in result_dict['area_of_components_sc_ratio']]
+area_comp_sc_ratio = np.array(area_comp_sc_ratio)
+area_comp_gt_ratio = np.array(area_comp_gt_ratio)
+area_comp_gt_ratio.astype(np.float32).tofile('area_of_components_gt_ratio.bin')
+area_comp_sc_ratio.astype(np.float32).tofile('area_of_components_sc_ratio.bin')
 
 
 
