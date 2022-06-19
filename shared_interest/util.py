@@ -107,7 +107,9 @@ def component_analysis(array_mask):
     object_features = skimage.measure.regionprops(labeled_image[0])
     area_of_components = [int(objf["area"]) for objf in object_features]
     
-    return num_of_components,area_of_components
+    area_of_components_percentage = np.array(area_of_components)/(array_mask.shape[1]*array_mask.shape[2])
+
+    return num_of_components,area_of_components, area_of_components_percentage.tolist()
 
 
 def save_grayscale(filename, array):
