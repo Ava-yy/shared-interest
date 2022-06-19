@@ -19,11 +19,8 @@ bash data_preparation.sh ./datasets/ILSVRC2012/val ./datasets/ILSVRC2012_Seg [sp
 ```
 * More details about ImageNet-S dataset could be read in https://github.com/UnsupervisedSemanticSegmentation/ImageNet-S
 
-## 4. 
-* We run VGG16 on the image dataset to obtain the activation heatmaps of each filter in the last convolutional layer before final classification.  
-* Based on the thresholds for activation masks of each filter, and thresholds for the definition of intersection of each filter pairs' masks, we stored the activation masks of each filter on each image, and sort all filter pairs based on their normalized intersection time.  
-    * For each image, the activation masks of all filters on that image are stored in ```zhaoy32/Desktop/Corr/CUB_200_2011/CUB_200_2011/images```  or ```zhaoy32/Desktop/Corr/imagenet/val/```
-    * For each filter, all the other filters which intersect(>iou threshold) with it are stored in ```zhaoy32/Desktop/Corr/corr/```, or ```zhaoy32/Desktop/Corr/imagenet/corr/``` along with the image paths where they intersect with each other, and other relevant information.
+## 4. define path for importing package
+```export PYTHONPATH=$PYTHONPATH:path/to/interaction```
 
 ## 3. Heatmap Dataset
 * __CUB Dataset__
