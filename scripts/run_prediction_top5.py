@@ -19,18 +19,18 @@ from shared_interest.util import (binarize_percentile, binarize_std, component_a
 # parse args
 parser = argparse.ArgumentParser()
 parser.add_argument('--dataset', type=str, default='imagenet_s', choices=['imagenet_s', 'coco'])
-parser.add_argument('--imagenets-dir', type=str, default="/home/zhaoy32/Desktop/shared-interest/datasets/ILSVRC2012_Seg/ImageNetS919/validation")
-parser.add_argument('--imagenets-gt-dir', type=str, default="/home/zhaoy32/Desktop/shared-interest/datasets/ILSVRC2012_Seg/ImageNetS919/validation-segmentation")
-parser.add_argument('--imagenets-label-file', type=str, default="/home/zhaoy32/Desktop/shared-interest/datasets/ILSVRC2012_Seg/ImageNetS919/val_label_mapping.txt")
-parser.add_argument('--coco-annot-file', type=str, default='/home/zhaoy32/Desktop/shared-interest/datasets/coco_dataset/annotations/instances_val2017.json')
-parser.add_argument('--coco-image-dir', type=str, default='/home/zhaoy32/Desktop/shared-interest/datasets/coco_dataset/val2017')
+parser.add_argument('--imagenets-dir', type=str, default="../datasets/ILSVRC2012_Seg/ImageNetS919/validation")
+parser.add_argument('--imagenets-gt-dir', type=str, default="../datasets/ILSVRC2012_Seg/ImageNetS919/validation-segmentation")
+#parser.add_argument('--imagenets-label-file', type=str, default="../datasets/ILSVRC2012_Seg/ImageNetS919/val_label_mapping.txt")
+parser.add_argument('--coco-annot-file', type=str, default='../datasets/coco_dataset/annotations/instances_val2017.json')
+parser.add_argument('--coco-image-dir', type=str, default='../datasets/coco_dataset/val2017')
 parser.add_argument('--arch', type=str, default='resnet50')
 parser.add_argument('--batch_size', type=int, default=1)
 parser.add_argument('--saliency-method', type=str, default='std')
 parser.add_argument('--ground-truth-method', type=str, default='seg_mask')
 parser.add_argument('--percentile', type=float, default=0.5)
 parser.add_argument('--num-std', type=float, default=1)
-parser.add_argument('--output-dir', type=str, default='./output_imagenet_s')
+parser.add_argument('--output-dir', type=str, default='../outputs/output_imagenet_s')
 args = parser.parse_args()
 
 # load dataset
@@ -48,14 +48,14 @@ model = model.to(device)
 saliency_method = gradcam.GradCAM(model, model.layer4[-1])
 # saliency_method = vanilla_gradients.VanillaGradients(model)
 
-unwanted_concepts = json.load(open('./unwanted_concepts.json','r'))
+unwanted_concepts = json.load(open('../datasets/unwanted_concepts.json','r'))
 
 # create output folders
-image_save_dir = Path(args.output_dir) / 'image_crop_train'
-mask_save_dir = Path(args.output_dir) / 'gt_mask_train'
-saliency_heatmap_save_dir = Path(args.output_dir) / 'saliency_train' / 'saliency_heatmap'
-saliency_mask_save_dir = Path(args.output_dir) / 'saliency_train' / 'saliency_mask'
-result_save_dir = Path(args.output_dir) / 'result_train'
+image_save_dir = os.path.join(args.output_dir,'image_crop_val')
+mask_save_dir = os.path.join(args.output_dir ,'gt_mask_val')
+saliency_heatmap_save_dir = os.path.join(args.output_dir ,'saliency_val' , 'saliency_heatmap')
+saliency_mask_save_dir = os.path.join(args.output_dir , 'saliency_val' , 'saliency_mask')
+result_save_dir = os.path.join(args.output_dir,'result_val')
 
 if not image_save_dir.exists(): image_save_dir.mkdir(parents=True)
 if not mask_save_dir.exists(): mask_save_dir.mkdir(parents=True)
@@ -77,7 +77,7 @@ gtc_list = []
 sc_list = []
 
 # load imagenetS919 label id -> original imagenet label id:
-imagenet_s_label_dict = json.load(open('./imagenetS_label_dict.json','r'))
+imagenet_s_label_dict = json.load(open('../datasets/imagenetS_label_dict.json','r'))
 
 # main loop
 for i, (image_names, images, bb_masks, seg_masks, labels) in enumerate(tqdm(dataloader)):
@@ -125,10 +125,7 @@ for i, (image_names, images, bb_masks, seg_masks, labels) in enumerate(tqdm(data
 
     for concept_id in torch.cat((top5_predictions,label.unsqueeze(0))):
 
-        # print('concept_id : ',concept_id)
-
         if concept_id.item() in unwanted_concepts:
-
             continue
 
         gradcam, upsampled_gradcam = saliency_method.get_saliency(image.unsqueeze(0), target_classes=torch.tensor(concept_id).unsqueeze(0))
