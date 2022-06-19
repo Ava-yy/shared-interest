@@ -1,0 +1,11 @@
+LICENSE
+README.md
+setup.py
+shared_interest/scoring_functions.py
+shared_interest/shared_interest.py
+shared_interest/util.py
+shared_interest.egg-info/PKG-INFO
+shared_interest.egg-info/SOURCES.txt
+shared_interest.egg-info/dependency_links.txt
+shared_interest.egg-info/not-zip-safe
+shared_interest.egg-info/top_level.txt
