@@ -10,8 +10,8 @@ from tqdm import tqdm
 from PIL import Image
 
 from interpretability_methods import gradcam, vanilla_gradients
-from shared_interest.datasets import get_dataset, get_transform
-from shared_interest.shared_interest import shared_interest
+from datasets_prep import get_dataset, get_transform
+from shared_interest import shared_interest
 from shared_interest.util import (binarize_percentile, binarize_std, component_analysis,
                     flatten, show_cam_on_image, save_grayscale)
 
@@ -51,11 +51,12 @@ saliency_method = gradcam.GradCAM(model, model.layer4[-1])
 unwanted_concepts = json.load(open('../datasets/unwanted_concepts.json','r'))
 
 # create output folders
-image_save_dir = os.path.join(args.output_dir,'image_crop_val')
-mask_save_dir = os.path.join(args.output_dir ,'gt_mask_val')
-saliency_heatmap_save_dir = os.path.join(args.output_dir ,'saliency_val' , 'saliency_heatmap')
-saliency_mask_save_dir = os.path.join(args.output_dir , 'saliency_val' , 'saliency_mask')
-result_save_dir = os.path.join(args.output_dir,'result_val')
+
+image_save_dir = Path(args.output_dir) / 'image_crop_val'
+mask_save_dir = Path(args.output_dir) / 'gt_mask_val'
+saliency_heatmap_save_dir = Path(args.output_dir) / 'saliency_val' / 'saliency_heatmap'
+saliency_mask_save_dir = Path(args.output_dir) / 'saliency_val' / 'saliency_mask'
+result_save_dir = Path(args.output_dir) / 'result_val'
 
 if not image_save_dir.exists(): image_save_dir.mkdir(parents=True)
 if not mask_save_dir.exists(): mask_save_dir.mkdir(parents=True)
