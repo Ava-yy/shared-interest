@@ -1,6 +1,7 @@
 """Utility functions for Shared Interest."""
-
+import cv2
 import numpy as np
+import skimage
 
 
 def flatten(batch):
@@ -70,3 +71,46 @@ def binarize_std(batch, num_std=1):
     threshold = mean + num_std * std
     binary_mask = (batch_normalized >= threshold).astype('uint8')
     return binary_mask
+
+
+def show_cam_on_image(img: np.ndarray,
+                      mask: np.ndarray,
+                      use_rgb: bool = False,
+                      colormap: int = cv2.COLORMAP_JET) -> np.ndarray:
+    """ This function overlays the cam mask on the image as an heatmap.
+    By default the heatmap is in BGR format.
+    :param img: The base image in RGB or BGR format.
+    :param mask: The cam mask.
+    :param use_rgb: Whether to use an RGB or BGR heatmap, this should be set to True if 'img' is in RGB format.
+    :param colormap: The OpenCV colormap to be used.
+    :returns: The default image with the cam overlay.
+    """
+    heatmap = cv2.applyColorMap(np.uint8(255 * mask), colormap)
+    if use_rgb:
+        heatmap = cv2.cvtColor(heatmap, cv2.COLOR_BGR2RGB)
+    heatmap = np.float32(heatmap) / 255
+
+    if np.max(img) > 1:
+        raise Exception(
+            "The input image should np.float32 in the range [0, 1]")
+
+    cam = heatmap + img
+    cam = cam / np.max(cam)
+    return np.uint8(255 * cam)
+
+
+def component_analysis(array_mask):
+    
+    labeled_image = skimage.measure.label(array_mask[0,:,:]>0,connectivity=2,return_num=True) # labeled_image[0].shape (224, 224, 3)  # https://datacarpentry.org/image-processing/09-connected-components/
+    
+    num_of_components = labeled_image[1]
+    object_features = skimage.measure.regionprops(labeled_image[0])
+    area_of_components = [int(objf["area"]) for objf in object_features]
+    
+    return num_of_components,area_of_components
+
+
+def save_grayscale(filename, array):
+    array = (array - array.min()) / (array.max() - array.min())
+    array = array.squeeze(0).squeeze(0) * 255
+    cv2.imwrite(filename, array)
