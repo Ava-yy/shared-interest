@@ -1,7 +1,6 @@
 # Interaction 
 
 ## 1. Clone this repo
-
 ## 2. Install Shared Interest 
 Install the method locally for use in other development projects. It can be referenced as shared_interest within this package and in other locations.
 ```
@@ -11,8 +10,7 @@ pip install -e git+https://github.com/mitvis/shared-interest.git#egg=shared_inte
 ## 3. Download ImageNet dataset
 * Download ILSVRC2012 validation dataset to ```./datasets/ILSVRC2012/val```  
 * Or you could copy it from ```/home/zhaoy32/Desktop/shared-interest/datasets/ILSVRC2012```   
-
-## 3. Create ImageNetS datasets
+## 3. Create ImageNetS dataset
 * clone ImageNet-S repo from https://github.com/UnsupervisedSemanticSegmentation/ImageNet-S to ```./datasets/```
 * The ImageNet-S dataset is based on the ImageNet-1k dataset. You need to have a copy of ImageNet-1k dataset, and you can also get the rest of the ImageNet-S dataset (split/annotations) with the following command:
 ```
