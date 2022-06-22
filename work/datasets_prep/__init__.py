@@ -23,10 +23,10 @@ def get_transform(name='image'):
         raise KeyError("transform name is invalid!")
 
 def get_dataset(name='imagenet'):
-    if name == 'imagenet':
-        return ImageNetDataset
-#     elif name == 'imagenet_s':
-#         return ImageNetSDataset
+    if name == 'imagenet_s':
+        return ImageNetSDataset
+#     elif name == 'imagenet':
+#         return ImageNetDataset
 #     elif name == 'coco':
 #         return CocoDataset
     else:
