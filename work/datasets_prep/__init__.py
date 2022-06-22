@@ -25,9 +25,9 @@ def get_transform(name='image'):
 def get_dataset(name='imagenet'):
     if name == 'imagenet':
         return ImageNetDataset
-    elif name == 'imagenet_s':
-        return ImageNetSDataset
-    elif name == 'coco':
-        return CocoDataset
+#     elif name == 'imagenet_s':
+#         return ImageNetSDataset
+#     elif name == 'coco':
+#         return CocoDataset
     else:
         raise KeyError("dataset name is invalid!")
