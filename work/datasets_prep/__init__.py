@@ -1,5 +1,3 @@
-from .imagenet_dataset import ImageNetDataset
-from .coco_dataset import CocoDataset
 from .imagenet_s_dataset import ImageNetSDataset
 
 import torchvision.transforms as transforms
